@@ -1,3 +1,18 @@
+## Note
+
+This repository is a **customized fork** of [nnU-Net](https://github.com/MIC-DKFZ/nnUNet),  
+based on commit [`b624fb9`](https://github.com/MIC-DKFZ/nnUNet/commit/b624fb9).  
+The purpose of this fork is to introduce additional features and modifications for our Modality Augmentation methods in brain MRI subregion segmentation for MTL.  
+
+All modifications are maintained under the dedicated branch: **`mmseg`**.  
+Please make sure to check out this branch before use:
+```bash
+git checkout mmseg
+```
+
+The specific implementation pipeline we proposed is available at:  
+[https://github.com/liyue3780/mmseg](https://github.com/liyue3780/mmseg)
+
 # Welcome to the new nnU-Net!
 
 Click [here](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1) if you were looking for the old one instead.
