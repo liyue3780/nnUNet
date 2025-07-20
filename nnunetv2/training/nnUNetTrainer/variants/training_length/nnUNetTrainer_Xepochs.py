@@ -62,6 +62,13 @@ class nnUNetTrainer_250epochs(nnUNetTrainer):
         self.num_epochs = 250
 
 
+class nnUNetTrainer400Epoch(nnUNetTrainer):
+    def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, unpack_dataset: bool = True, device: torch.device = ...):
+        super().__init__(plans, configuration, fold, dataset_json, unpack_dataset, device)
+        self.num_epochs = 400
+        print('I have used 400 epochs as training length!')
+
+
 class nnUNetTrainer_2000epochs(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, unpack_dataset: bool = True,
                  device: torch.device = torch.device('cuda')):
