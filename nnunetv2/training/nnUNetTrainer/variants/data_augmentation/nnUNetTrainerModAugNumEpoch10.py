@@ -27,7 +27,7 @@ from nnunetv2.training.data_augmentation.custom_transforms.transforms_for_dummy_
 from nnunetv2.training.data_augmentation.custom_transforms.modality_aug import ModalityAugAllFourTransform
 
 
-class ModAugAllFourUNetTrainer(nnUNetTrainer):
+class nnUNetTrainerModAugNumEpoch10(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, unpack_dataset: bool = True, device: torch.device = ...):
         super().__init__(plans, configuration, fold, dataset_json, unpack_dataset, device)
         self.num_epochs = 10
