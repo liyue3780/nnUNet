@@ -99,11 +99,11 @@ def augment_missed_modality_only_for_first_two_channels(data_sample: np.ndarray)
         missing_num = random.randint(1, 1)  # only augment one of the first two channels
         aug_cn = random.sample(range(2), missing_num)
     elif channel_num == 1:
-        print('No channel can be augmented')
+        log_verbose('No channel can be augmented')
         return data_sample
     else:
         raise
-    print('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
+    log_verbose('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
 
     for cn_ in aug_cn:
         if len(data_sample[cn_].shape) == 3:
@@ -129,6 +129,6 @@ class ModalityAugFirstTwoChannelsTransform(AbstractTransform):
             if np.random.uniform() < 0.5:
                 data_dict[self.data_key][b] = augment_missed_modality_only_for_first_two_channels(data_dict[self.data_key][b])
             else:
-                print('do not implement the modality augmentation')
+                log_verbose('do not implement the modality augmentation')
 
         return data_dict
