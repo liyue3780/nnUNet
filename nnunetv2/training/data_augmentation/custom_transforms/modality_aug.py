@@ -89,3 +89,46 @@ class ModalityAugAnyNumberTransform(AbstractTransform):
                 log_verbose('do not implement the modality augmentation')
 
         return data_dict
+
+
+# ------- work for first two modalities -------
+def augment_missed_modality_only_for_first_two_channels(data_sample: np.ndarray):
+
+    channel_num = data_sample.shape[0]
+    if channel_num > 1:
+        missing_num = random.randint(1, 1)  # only augment one of the first two channels
+        aug_cn = random.sample(range(2), missing_num)
+    elif channel_num == 1:
+        print('No channel can be augmented')
+        return data_sample
+    else:
+        raise
+    print('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
+
+    for cn_ in aug_cn:
+        if len(data_sample[cn_].shape) == 3:
+            # for 3D
+            new_array = np.random.randn(data_sample[cn_].shape[0], data_sample[cn_].shape[1], data_sample[cn_].shape[2])
+            data_sample[cn_] = new_array
+
+        elif len(data_sample[cn_].shape) == 2:
+            # for 2D
+            new_array = np.random.randn(data_sample[cn_].shape[0], data_sample[cn_].shape[1])
+            data_sample[cn_] = new_array
+    
+    return data_sample
+
+
+class ModalityAugFirstTwoChannelsTransform(AbstractTransform):
+    def __init__(self, data_key="data") -> None:
+        super().__init__()
+        self.data_key = data_key
+    
+    def __call__(self, **data_dict):
+        for b in range(len(data_dict[self.data_key])):
+            if np.random.uniform() < 0.5:
+                data_dict[self.data_key][b] = augment_missed_modality_only_for_first_two_channels(data_dict[self.data_key][b])
+            else:
+                print('do not implement the modality augmentation')
+
+        return data_dict
