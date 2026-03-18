@@ -1,6 +1,13 @@
 from batchgenerators.transforms.abstract_transforms import AbstractTransform
 import numpy as np
 import random
+import os
+
+verbose_ = os.environ.get('ModAug_VERBOSE', '0') == '1'
+
+def log_verbose(msg):
+    if verbose_:
+        print(msg)
 
 
 def augment_missed_modality_all_four(data_sample: np.ndarray):
@@ -11,7 +18,8 @@ def augment_missed_modality_all_four(data_sample: np.ndarray):
     # select the augmentation method
     missing_num = random.randint(1, 4)
     aug_cn = random.sample(range(channel_num), missing_num)
-    print('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
+    
+    log_verbose('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
 
     for cn_ in aug_cn:
         new_array = np.random.randn(data_sample[cn_].shape[0],\
@@ -32,7 +40,7 @@ class ModalityAugAllFourTransform(AbstractTransform):
             if np.random.uniform() < 0.5:
                 data_dict[self.data_key][b] = augment_missed_modality_all_four(data_dict[self.data_key][b])
             else:
-                print('do not implement the modality augmentation')
+                log_verbose('do not implement the modality augmentation')
 
         return data_dict
 
@@ -46,13 +54,13 @@ def augment_missed_modality_any_number(data_sample: np.ndarray):
         aug_cn = random.sample(range(channel_num), missing_num)
 
     elif channel_num == 1:
-        print('No channel can be augmented')
+        log_verbose('No channel can be augmented')
         return data_sample
         
     else:
         raise
     
-    print('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
+    log_verbose('modality augmentation: imitate missing {} modality/modalities: {}'.format(len(aug_cn), str(aug_cn)))
 
     for cn_ in aug_cn:
         if len(data_sample[cn_].shape) == 3:
@@ -78,6 +86,6 @@ class ModalityAugAnyNumberTransform(AbstractTransform):
             if np.random.uniform() < 0.5:
                 data_dict[self.data_key][b] = augment_missed_modality_any_number(data_dict[self.data_key][b])
             else:
-                print('do not implement the modality augmentation')
+                log_verbose('do not implement the modality augmentation')
 
         return data_dict
